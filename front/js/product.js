@@ -1,33 +1,43 @@
-// Recup json
-// http://localhost:3000/api/products
-let productsData = [];
+// // Recup json
+// // http://localhost:3000/api/products
+let singleProductData = [];
 
-// Recup ID url
-let str = window.location.href;
-let url = new URL(str);
-let idParams = url.searchParams.get("id");console.log(productsData);
+// Recupération de l'ID dans url
+let currentPage = window.location.href;
+let url = new URL(currentPage);
+let urlId = url.searchParams.get("id");
+// console.log(idParam);
 
-// fonction permetant de demander à l'API quels sont les produits
+// // fonction permetant de demander à l'API quelles sont les caratéristiques du produit
 const fetchSingleProduct = async () => {
-  await fetch("http://localhost:3000/api/products")
+  await fetch("http://localhost:3000/api/products/" + urlId)
     .then((res) => res.json())
-    .then(console.log(idParams))
-    .then((data) => (singleProduct = productsData+idParams)) 
-    console.log(singleProduct);
+    // .then((data)=> console.log(data))
+    .then((data) => (singleProductData = data))
+        console.log(singleProductData);
+};
+fetchSingleProduct();
+
+// //fonction permetant de demander à l'API d'afficher LE produit sur la page
+const singleProductDisplay = async () => {
+await fetchSingleProduct();
+
+//image à récupérer
+console.log(singleProductData.imageUrl);
+console.log(singleProductData.altTxt);
+
+//<h1 id="title"><!-- Nom du produit --></h1>
+console.log(singleProductData.name);
+
+//<p>Prix : <span id="price">
+console.log(singleProductData.price);
+
+//<p id="description">
+console.log(singleProductData.description);
+
+//<select name="color-select" id="colors">
+
+console.log(singleProductData.colors)
 };
 
-
-//fonction permetant de demander à l'API d'afficher le produit
-
-const singleProductDisplay = async () => {
-    await fetchSingleProduct();
-    // document.getElementsByClassName("item__img").innerHtml = productsData
-    // .map((product) =>
-    // `<img src=${product.imageUrl} alt="${product.description}"></img>
-    // `
-    // )
-    console.log(product.description);
-}
-
 singleProductDisplay();
-

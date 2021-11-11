@@ -1,7 +1,7 @@
-// http://localhost:3000/api/products
+// // http://localhost:3000/api/products
 let productsData = [];
 
-//fonction permetant de demander à l'API quels sont les produits
+// //fonction permetant de demander à l'API quels sont les produits
 const fetchAllProducts = async () => {
   await fetch("http://localhost:3000/api/products")
     .then((res) => res.json())
@@ -9,7 +9,7 @@ const fetchAllProducts = async () => {
   console.table(productsData);
 };
 
-//fonction permetant de demander à l'API d'afficher les produits
+// //fonction permetant de demander à l'API d'afficher les produits
 const allProductsDisplay = async () => {
   await fetchAllProducts();
 
@@ -25,6 +25,6 @@ const allProductsDisplay = async () => {
        `
        )
        .join("");
-      };
+};
 
 allProductsDisplay();
