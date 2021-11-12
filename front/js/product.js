@@ -13,31 +13,50 @@ const fetchSingleProduct = async () => {
   await fetch("http://localhost:3000/api/products/" + urlId)
     .then((res) => res.json())
     // .then((data)=> console.log(data))
-    .then((data) => (singleProductData = data))
-        console.log(singleProductData);
+    .then((data) => (singleProductData = data));
+  //console.log(singleProductData);
 };
 fetchSingleProduct();
 
 // //fonction permetant de demander à l'API d'afficher LE produit sur la page
 const singleProductDisplay = async () => {
-await fetchSingleProduct();
+  await fetchSingleProduct();
 
-//image à récupérer
-console.log(singleProductData.imageUrl);
-console.log(singleProductData.altTxt);
+  //image à récupérer
+  // console.log(singleProductData.imageUrl);
+  // console.log(singleProductData.altTxt);
 
-//<h1 id="title"><!-- Nom du produit --></h1>
-console.log(singleProductData.name);
+  document.getElementById("item__img").innerHTML +=
+    "<img src =" +
+    singleProductData.imageUrl +
+    " alt=" +
+    singleProductData.altTxt +
+    ">";
 
-//<p>Prix : <span id="price">
-console.log(singleProductData.price);
+  //titre à récupérer
+  // console.log(singleProductData.name);
+  document.getElementById("title").innerHTML += singleProductData.name;
 
-//<p id="description">
-console.log(singleProductData.description);
+  //prix à récupérer
+  // console.log(singleProductData.price);
+  document.getElementById("price").innerHTML += singleProductData.price;
 
-//<select name="color-select" id="colors">
+  //description à récupérer
+  // console.log(singleProductData.description);
+  document.getElementById("description").innerHTML +=
+    singleProductData.description;
 
-console.log(singleProductData.colors)
+  // Couleurs à récupérer
+  console.log(singleProductData.colors);
+  console.log(singleProductData.colors.length);
+
+
+  let colorList = singleProductData.colors;
+
+colorList.forEach((color ,i ) => {
+  document.getElementById("colors").innerHTML += '<option value='+ singleProductData.colors[i]+ '>' + singleProductData.colors[i] + '</option>'
+     });
+  
 };
 
 singleProductDisplay();
