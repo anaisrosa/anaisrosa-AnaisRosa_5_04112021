@@ -77,6 +77,7 @@ addToCartBtn.addEventListener("click", (e) => {
     ) {
       //Recupération des couleurs et quantités selectionnés
       colorPicked = colorPicked.value;
+      console.log(colorPicked);
       amountOfItems = amountOfItems.value;
 
       //création d'un objet par item mis dans le panier:
@@ -87,8 +88,8 @@ addToCartBtn.addEventListener("click", (e) => {
     itemName : singleProductData.name,
     itemPrice : singleProductData.price,
     itemDescription : singleProductData.description,
-    itemColorPicked : colorPicked.value,
-    itemAmount : amountOfItems.value
+    itemColorPicked : colorPicked,
+    itemAmount : Number(amountOfItems),
     }
   // console.log(product);
 
@@ -99,8 +100,8 @@ let itemSelected = JSON.parse(localStorage.getItem('item'));
 
 //s'il y a dejà des des produits dans le panier 
 if(itemSelected) {
-  // itemSelected.push(product);
-  // localStorage.setItem("item", JSON.stringify(itemSelected));
+  itemSelected.push(product);
+  localStorage.setItem("item", JSON.stringify(itemSelected));
 
   //s'il n'y a pas de produits dans le panier
 } else {
