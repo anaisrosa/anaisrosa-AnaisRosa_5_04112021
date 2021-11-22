@@ -78,7 +78,7 @@ const checkQuantity = () => {
   console.log(a);
   //vérification + Stokage de la quantité
   if (a == 0 || a >= 100) {
-    console.log("Vous devez ajouter une quantité (entre 1 et 100)");
+    alert("Vous devez ajouter une quantité (entre 1 et 100)");
   } else {
     //Recupération de la quantité selectionnée
     checkColor();
@@ -90,7 +90,7 @@ const checkQuantity = () => {
 /////////////////////// Verfifier la couleur /////////////////////////////
 const checkColor = () => {
   if (colorPicked.value == "") {
-    console.log("Vous devez selectioner une couleur");
+    alert ("Vous devez selectioner une couleur");
   } else {
     //Recupération de la couleur selectionnée
     colorPicked = colors.value;
