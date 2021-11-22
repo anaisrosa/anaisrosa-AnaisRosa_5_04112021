@@ -10,9 +10,9 @@ let urlIdProduct = url.searchParams.get("id");
 // // Demande à l'API d'aller chercher le produit
 const fetchSingleProduct = async () => {
   await fetch("http://localhost:3000/api/products/" + urlIdProduct)
-    .then((res) => res.json())
-    // .then((data)=> console.log(data))
-    .then((data) => (singleProductData = data));
+  .then((res) => res.json())
+  // .then((data)=> console.log(data))
+  .then((data) => (singleProductData = data));
   // console.log(singleProductData);
   // console.log(singleProductData.colors);
 };
@@ -20,42 +20,42 @@ const fetchSingleProduct = async () => {
 // //demander à l'API d'afficher LE produit sur la page
 const singleProductDisplay = async () => {
   await fetchSingleProduct();
-
+  
   //image à récupérer :
   // console.log(singleProductData.imageUrl);
   // console.log(singleProductData.altTxt);
   document.getElementById("item__img").innerHTML +=
-    "<img src =" +
-    singleProductData.imageUrl +
-    " alt=" +
-    singleProductData.altTxt +
-    ">";
-
+  "<img src =" +
+  singleProductData.imageUrl +
+  " alt=" +
+  singleProductData.altTxt +
+  ">";
+  
   //Nom à récupérer :
   // console.log(singleProductData.name);
   document.getElementById("title").innerHTML += singleProductData.name;
-
+  
   //Prix à récupérer
   // console.log(singleProductData.price);
   document.getElementById("price").innerHTML += singleProductData.price + " ";
-
+  
   //Description à récupérer
   // console.log(singleProductData.description);
   document.getElementById("description").innerHTML +=
-    singleProductData.description;
-
+  singleProductData.description;
+  
   // Couleurs à récupérer
   //console.log(singleProductData.colors);
   //console.log(singleProductData.colors.length);
   let colorList = singleProductData.colors;
-
+  
   colorList.forEach((color, i) => {
     document.getElementById("colors").innerHTML +=
-      "<option value=" +
-      singleProductData.colors[i] +
-      ">" +
-      singleProductData.colors[i] +
-      "</option>";
+    "<option value=" +
+    singleProductData.colors[i] +
+    ">" +
+    singleProductData.colors[i] +
+    "</option>";
   });
 };
 singleProductDisplay();
@@ -100,6 +100,7 @@ const checkColor = () => {
   }
 };
 
+
 //////////////////////Initialisation local storage ///////////////////////
 
 function addItemToCart() {
@@ -113,20 +114,29 @@ function addItemToCart() {
     itemColor: colorPicked,
     itemAmount: Number(amountOfItems.value),
   };
-
+  
   //LOCAL STORAGE .Parse transforme les objets du Localstorage en objets JSON
   let itemsInCart = JSON.parse(localStorage.getItem("item"));
   //console.log(itemsInCart);
-
+  
+  const confirmItem = () => {
+    if(window.confirm(`Le produit ${singleProductData.name}, ${colorPicked} a bien été ajouté à votre panier en ${ Number(amountOfItems.value)} unité(s). Pour consulter le Panier : OK ou pour revenir à l'accueil ANNULER.
+    `)){
+      window.location.href ="./cart.html";
+    } else {
+      window.location.href ="./index.html";  
+    }
+  }
+  
   //s'il y a déjà des produits dans le panier
   if (itemsInCart) {
     // recherche de la même référence avec la même couleur
     const sameProduct = itemsInCart.find(
       (element) => element.itemId === urlIdProduct && element.itemColor === colorPicked);
-
+      
       if (sameProduct) {
         console.log("MAJ quantité avec id + couleur identique");
-
+        
         //alors on cherche les quantités
         console.log("la quantité à ajouter" + product.itemAmount)
         console.log("la quantité trouvée dans le panier: " + sameProduct.itemAmount)
@@ -138,19 +148,22 @@ function addItemToCart() {
         sameProduct.itemAmount = updateQuantity;
         localStorage.setItem("item", JSON.stringify(itemsInCart));
         console.log(itemsInCart);
+        confirmItem();
         
       } else {
+        itemsInCart.push(product);
+        localStorage.setItem("item", JSON.stringify(itemsInCart));
+        console.log("On ajoute le produit dans le panier");
+        confirmItem();
+      }
+      //s'il n'y a pas déjà des produits dans le panier
+    } else {
+      //création de la clé
+      itemsInCart = [];
       itemsInCart.push(product);
       localStorage.setItem("item", JSON.stringify(itemsInCart));
-      console.log("On ajoute le produit dans le panier");
-      }
-    //s'il n'y a pas déjà des produits dans le panier
-  } else {
-    //création de la clé
-    itemsInCart = [];
-    itemsInCart.push(product);
-    localStorage.setItem("item", JSON.stringify(itemsInCart));
-    //console.log(itemsInCart);
+      confirmItem();
+      //console.log(itemsInCart);
+    }
   }
-}
-
+  
