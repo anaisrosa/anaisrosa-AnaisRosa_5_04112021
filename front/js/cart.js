@@ -6,7 +6,7 @@ console.log(itemsInCart);
 const cartElements = document.getElementById("cart__items");
 
 // // Si le Panier est Vide
-if (itemsInCart == null) {
+if (itemsInCart == null || itemsInCart == 0 ) {
   const emptyCart = `
 <div>Le panier est vide</div>
 `;
@@ -17,6 +17,9 @@ if (itemsInCart == null) {
 
   for (j = 0; j < itemsInCart.length; j++) {
 
+    let totalPriceByProduct = itemsInCart[j].itemAmount * itemsInCart[j].itemPrice;
+    console.log(totalPriceByProduct);
+
     itemCard = itemCard + `
     <article class="cart__item" data-id="{product-ID}">
 
@@ -26,8 +29,8 @@ if (itemsInCart == null) {
 
     <div class="cart__item__content">
       <div class="cart__item__content__titlePrice">
-        <h2>${itemsInCart[j].itemName}</h2>
-        <p>${itemsInCart[j].itemPrice} €</p>
+        <h2>${itemsInCart[j].itemName}, ${itemsInCart[j].itemColor}</h2>
+        <p>${totalPriceByProduct}  €</p>
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -44,8 +47,49 @@ if (itemsInCart == null) {
   }
     if(j === itemsInCart.length) {
     cartElements.innerHTML = itemCard;
-
   }
 }
+
+/////////////////////// Supression d'un produits dans le Panier //////////////////////////
+
+const eraseProduct = () => {
+
+let deleteItem = document.querySelectorAll(".deleteItem");
+
+//ça sort une node liste je dois faire un bloucle pour passer sur tous
+for (let k = 0; k < deleteItem.length; k++) {
+
+  // il faut suprimener la ligne du local Storage
+deleteItem[k].addEventListener("click", (e) => {
+  e.preventDefault();
+
+ //trouver l'id du produit à supprimer + Couleur
+let idProductDelete = itemsInCart[k].itemId;
+// console.log(idProductDelete);
+let colorProductDetete = itemsInCart[k].itemColor
+// console.log(colorProductDetete);
+
+// chercher l'id du produit à supprimer + Couleur dans le array
+itemsInCart = itemsInCart.filter( product => product.itemId !== idProductDelete || product.itemColor !== colorProductDetete );
+localStorage.setItem("item", JSON.stringify(itemsInCart));  
+alert("Ce produit a bien été supprimé.")
+  window.location.href = "./cart.html";
+  });
+  
+}
+
+}
+eraseProduct();
+
+/////////////////////// Update des quantités dans le Panier //////////////////////////
+
+const updateQuantityInCart = () => {
+  
+  let quantityInCart =  document.querySelectorAll(".itemQuantity") 
+
+  
+
+}
+
 
 
