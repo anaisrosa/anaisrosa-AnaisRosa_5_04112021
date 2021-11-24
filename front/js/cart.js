@@ -8,44 +8,44 @@ const cartElements = document.getElementById("cart__items");
 // // Si le Panier est Vide
 if (itemsInCart == null || itemsInCart == 0 ) {
   const emptyCart = `
-<div>Le panier est vide</div>
-`;
+  <div>Le panier est vide</div>
+  `;
   cartElements.innerHTML = emptyCart;
 } else {
   // // Si le Panier contient déjà des produits
   let itemCard = [];
-
+  
   for (j = 0; j < itemsInCart.length; j++) {
-
+    
     let totalPriceByProduct = itemsInCart[j].itemAmount * itemsInCart[j].itemPrice;
-    console.log(totalPriceByProduct);
-
+    // console.log(totalPriceByProduct);
+    
     itemCard = itemCard + `
     <article class="cart__item" data-id="{product-ID}">
-
+    
     <div class="cart__item__img">
-     <img src="${itemsInCart[j].itemPicture}" alt="${itemsInCart[j].itemAltText}">
+    <img src="${itemsInCart[j].itemPicture}" alt="${itemsInCart[j].itemAltText}">
     </div>
-
+    
     <div class="cart__item__content">
-      <div class="cart__item__content__titlePrice">
-        <h2>${itemsInCart[j].itemName}, ${itemsInCart[j].itemColor}</h2>
-        <p>${totalPriceByProduct}  €</p>
-      </div>
-      <div class="cart__item__content__settings">
-        <div class="cart__item__content__settings__quantity">
-          <p>Qté : ${itemsInCart[j].itemAmount}</p>
-          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="0">
-        </div>
-        <div class="cart__item__content__settings__delete">
-          <p class="deleteItem">Supprimer</p>
-        </div>
-      </div>
+    <div class="cart__item__content__titlePrice">
+    <h2>${itemsInCart[j].itemName}, ${itemsInCart[j].itemColor}</h2>
+    <p>${totalPriceByProduct}  €</p>
     </div>
-  </article>
+    <div class="cart__item__content__settings">
+    <div class="cart__item__content__settings__quantity">
+    <p id="amountItemsLocalStorage">Qté : ${itemsInCart[j].itemAmount}</p>
+    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${itemsInCart[j].itemAmount}">
+    </div>
+    <div class="cart__item__content__settings__delete">
+    <p class="deleteItem">Supprimer</p>
+    </div>
+    </div>
+    </div>
+    </article>
     `;
   }
-    if(j === itemsInCart.length) {
+  if(j === itemsInCart.length) {
     cartElements.innerHTML = itemCard;
   }
 }
@@ -53,31 +53,31 @@ if (itemsInCart == null || itemsInCart == 0 ) {
 /////////////////////// Supression d'un produits dans le Panier //////////////////////////
 
 const eraseProduct = () => {
-
-let deleteItem = document.querySelectorAll(".deleteItem");
-
-//ça sort une node liste je dois faire un bloucle pour passer sur tous
-for (let k = 0; k < deleteItem.length; k++) {
-
-  // il faut suprimener la ligne du local Storage
-deleteItem[k].addEventListener("click", (e) => {
-  e.preventDefault();
-
- //trouver l'id du produit à supprimer + Couleur
-let idProductDelete = itemsInCart[k].itemId;
-// console.log(idProductDelete);
-let colorProductDetete = itemsInCart[k].itemColor
-// console.log(colorProductDetete);
-
-// chercher l'id du produit à supprimer + Couleur dans le array
-itemsInCart = itemsInCart.filter( product => product.itemId !== idProductDelete || product.itemColor !== colorProductDetete );
-localStorage.setItem("item", JSON.stringify(itemsInCart));  
-alert("Ce produit a bien été supprimé.")
-  window.location.href = "./cart.html";
-  });
   
-}
-
+  let deleteItem = document.querySelectorAll(".deleteItem");
+  
+  //ça sort une node liste je dois faire un bloucle pour passer sur tous
+  for (let k = 0; k < deleteItem.length; k++) {
+    
+    // il faut suprimener la ligne du local Storage
+    deleteItem[k].addEventListener("click", (e) => {
+      e.preventDefault();
+      
+      //trouver l'id du produit à supprimer + Couleur
+      let idProductDelete = itemsInCart[k].itemId;
+      // console.log(idProductDelete);
+      let colorProductDetete = itemsInCart[k].itemColor
+      // console.log(colorProductDetete);
+      
+      // chercher l'id du produit à supprimer + Couleur dans le array
+      itemsInCart = itemsInCart.filter( product => product.itemId !== idProductDelete || product.itemColor !== colorProductDetete );
+      localStorage.setItem("item", JSON.stringify(itemsInCart));  
+      alert("Ce produit a bien été supprimé.")
+      window.location.href = "./cart.html";
+    });
+    
+  }
+  
 }
 eraseProduct();
 
@@ -85,11 +85,37 @@ eraseProduct();
 
 const updateQuantityInCart = () => {
   
-  let quantityInCart =  document.querySelectorAll(".itemQuantity") 
-
+  let amountItemInput =  document.querySelectorAll(".itemQuantity") 
+  let amountItemsLocalStorage = document.getElementById("amountItemsLocalStorage")
+  let inputQuantity
+  let quantityToUpdate
   
+  //ça sort une node liste je dois faire un bloucle pour passer sur tous
+  for (let l = 0; l < amountItemInput.length; l++) {
+    amountItemInput[l].addEventListener("input", (e) => {
+      
+      inputQuantity = e.target.value;
+      // console.log("Je suis la quantité du input : " + inputQuantity);
+      
+      // On cherche la quantité dans le local storage
+      let quantityToUpdate = Number(itemsInCart[l].itemAmount);
+      // console.log("je suis a quantité à mettre à Jour : " + quantityToUpdate);
+      
+      const findQuantity = itemsInCart.find(
+        (element) => element.itemAmount !== quantityToUpdate);
+        console.log(findQuantity);
+        console.log("Je suis la quantité déjà dans le panier "+ findQuantity.itemAmount);
+        findQuantity.itemAmount = inputQuantity;
+        console.log("Je suis la quantité mise à jour : " + inputQuantity);
 
-}
+        // on remplace la quantité et on l'intègre au Html et on recharge la page
+        localStorage.setItem("item", JSON.stringify(itemsInCart));  
+        alert("Ce produit a bien été modifié.")
+        window.location.href = "./cart.html";
+        
+      });
+      
+    }
+  }
 
-
-
+  updateQuantityInCart();
