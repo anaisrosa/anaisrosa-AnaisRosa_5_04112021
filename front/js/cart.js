@@ -102,7 +102,7 @@ const updateQuantityInCart = () => {
       // console.log("je suis a quantité à mettre à Jour : " + quantityToUpdate);
       
       const findQuantity = itemsInCart.find(
-        (element) => element.itemAmount !== quantityToUpdate);
+        (element) => element.itemAmount !== inputQuantity);
         console.log(findQuantity);
         console.log("Je suis la quantité déjà dans le panier "+ findQuantity.itemAmount);
         findQuantity.itemAmount = inputQuantity;
@@ -119,3 +119,37 @@ const updateQuantityInCart = () => {
   }
 
   updateQuantityInCart();
+
+  /////////////////////// Update total du Prix et du nombre de produits //////////////////////////
+  
+  const totalItems = ()=> {
+    let itemTotalCart =  document.getElementById("totalQuantity") 
+
+    let sumItems = 0;
+    for (let m = 0; m < itemsInCart.length; m++) {
+    // console.log(itemsInCart[m].itemAmount)
+    sumItems += Number(itemsInCart[m].itemAmount)
+    }
+    // console.log(sumItems);
+
+    totalQuantity.innerHTML += sumItems;
+  }
+
+  totalItems();
+
+  const totalPrice = ()=> {
+    let priceTotalCart = document.getElementById("totalPrice")
+    let sumPrice = 0;
+    for (let n = 0; n < itemsInCart.length; n++) {
+    // console.log(itemsInCart[n].itemPrice)
+    sumPrice += Number(itemsInCart[n].itemPrice*itemsInCart[n].itemAmount)
+    }
+    console.log(sumPrice);
+
+    priceTotalCart.innerHTML += sumPrice;
+  }
+  totalPrice();
+  
+
+
+
