@@ -206,14 +206,35 @@ form.addEventListener("submit", (e) => {
   };
 
   // création d'un objet avec Cantact + [] avec les ids
-  const data = {
+  const dataOrder = {
     contact,
-    productIds: itemsInCart.map((item) => {
+    products: itemsInCart.map((item) => {
       return item.itemId;
     }),
   };
-  console.log(data);
+  console.log(dataOrder);
+
+  // // Push des datas dans l'API + Récupération du numéro de la commande
+  const postData = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dataOrder),
+  };
+
+  fetch("http://localhost:3000/api/products/order", postData)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("je suis le numéro de commande : " + data.orderId);
+      localStorage.setItem("orderNum", JSON.stringify(data.orderId));
+
+      // On Ouvre la page Confirmation
+      window.location.href ="./confirmation.html";  
+    });
 });
+
 
 ///////////////////////////////////Contrôles des champs//////////////////////////
 
@@ -225,7 +246,7 @@ const firstNameChecker = (value) => {
   ) {
     firstName = false;
     errorDisplay("firstName", "Le prénom doit faire entre 3 et 20 caractères");
-  } else if (!value.match(/^[a-zA-Z_.-]*$/)) {
+  } else if (!value.match(/^[a-zàâäéèêëïîôöùûüçA-Z_.-]*$/)) {
     firstName = false;
     errorDisplay(
       "firstName",
@@ -250,7 +271,7 @@ const lastNameChecker = (value) => {
       "lastName",
       "Le nom de famille doit faire entre 3 et 20 caractères"
     );
-  } else if (!value.match(/^[a-zA-Z_.-]*$/)) {
+  } else if (!value.match(/^[a-zàâäéèêëïîôöùûüçA-Z_.-]*$/)) {
     lastName = false;
     errorDisplay(
       "lastName",
@@ -267,7 +288,7 @@ const addressChecker = (value) => {
   if (value.length > 0 && (value.length < 5 || value.length > 40)) {
     address = false;
     errorDisplay("address", "L'adresse doit faire entre 5 et 40 caractères");
-  } else if (!value.match(/^[a-zA-Z0-9_ ]*$/)) {
+  } else if (!value.match(/^[a-zàâäéèêëïîôöùûüçA-Z0-9_ ]*$/)) {
     address = false;
     errorDisplay(
       "address",
@@ -287,7 +308,7 @@ const cityNameChecker = (value) => {
       "city",
       "Le nom de la ville doit faire entre 3 et 20 caractères"
     );
-  } else if (!value.match(/^[a-zA-Z_.-]*$/)) {
+  } else if (!value.match(/^[a-zàâäéèêëïîôöùûüçA-Z_.-]*$/)) {
     city = false;
     errorDisplay(
       "city",
@@ -324,6 +345,7 @@ formInputs.forEach((input) => {
         break;
       case "address":
         addressChecker(e.target.value);
+        break;
       case "city":
         cityNameChecker(e.target.value);
         break;
