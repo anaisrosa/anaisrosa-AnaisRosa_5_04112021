@@ -1,4 +1,3 @@
-// // Recup json
 // // http://localhost:3000/api/products
 let singleProductData = [];
 // Recupération de l'ID dans url
@@ -6,6 +5,9 @@ let currentPage = window.location.href;
 let url = new URL(currentPage);
 let urlIdProduct = url.searchParams.get("id");
 // console.log(urlIdProduct);
+const addToCartBtn = document.getElementById("addToCart");
+let amountOfItems = document.getElementById("quantity");
+let colorPicked = document.getElementById("colors");
 
 //////////////////// Demande à l'API d'aller chercher le produit///////////////////
 const fetchSingleProduct = async () => {
@@ -17,7 +19,7 @@ const fetchSingleProduct = async () => {
   // console.log(singleProductData.colors);
 };
 
-//////////////////// Demander à l'API d'afficher LE produit sur la page/////////////
+//////////////////// Affichage du produit sur la page///////////////////////////////
 const singleProductDisplay = async () => {
   await fetchSingleProduct();
   
@@ -59,18 +61,10 @@ const singleProductDisplay = async () => {
 };
 singleProductDisplay();
 
-//////////////////// Création du Panier /////////////////////////////////
-const addToCartBtn = document.getElementById("addToCart");
-let amountOfItems = document.getElementById("quantity");
-let colorPicked = document.getElementById("colors");
 
-///////////////////// Ajout d'un produit dans le panier//////////////////
+//// Verification des options d'ajout au panier : couleur et quantité obligatoires ////
 
-addToCartBtn.addEventListener("click", (e) => {
-  checkQuantity();
-});
-
-//////////////////// Verifier quantité //////////////////////////////////
+// // Verifier quantité 
 const checkQuantity = () => {
   //console.log(amountOfItems.value);
   let a = amountOfItems.value;
@@ -86,7 +80,7 @@ const checkQuantity = () => {
   }
 };
 
-/////////////////////// Verfifier la couleur /////////////////////////////
+// // Verfifier la couleur 
 const checkColor = () => {
   if (colorPicked.value == "") {
     alert ("Vous devez selectioner une couleur");
@@ -99,9 +93,17 @@ const checkColor = () => {
   }
 };
 
-//////////////////////Initialisation local storage ///////////////////////
+// // Verifications d'ajout au panier 
+const checkOptions = () => {
+addToCartBtn.addEventListener("click", (e) => {
+  checkQuantity();
+});
+}
+checkOptions();
 
-function addItemToCart() {
+//////////////////////Initialisation local storage + ajout au Panier ///////////////////////
+
+const addItemToCart = () => {
   let product = {
     itemId: singleProductData._id,
     itemPicture: singleProductData.imageUrl,

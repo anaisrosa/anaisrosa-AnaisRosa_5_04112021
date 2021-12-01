@@ -24,7 +24,7 @@ const allProductsDisplay = async () => {
        </a>
        `
        )
-       .join("");
+      .join("");
 };
 
 allProductsDisplay();

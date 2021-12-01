@@ -228,6 +228,7 @@ form.addEventListener("submit", (e) => {
     .then((res) => res.json())
     .then((data) => {
       console.log("je suis le numéro de commande : " + data.orderId);
+      localStorage.removeItem("item")
       localStorage.setItem("orderNum", JSON.stringify(data.orderId));
 
       // On Ouvre la page Confirmation
