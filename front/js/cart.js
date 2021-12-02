@@ -3,8 +3,10 @@ let itemsInCart = JSON.parse(localStorage.getItem("item"));
 console.log(itemsInCart);
 
 /////////////////////// Affichage des produits dans le Panier //////////////////////////
-const cartElements = document.getElementById("cart__items");
 
+const displayCart = () => {
+// // On pointe l'élément
+  const cartElements = document.getElementById("cart__items");
 // // Si le Panier est Vide
 if (itemsInCart == null || itemsInCart == 0) {
   const emptyCart = `
@@ -51,6 +53,8 @@ if (itemsInCart == null || itemsInCart == 0) {
     cartElements.innerHTML = itemCard;
   }
 }
+}
+displayCart();
 
 /////////////////////// Supression d'un produits dans le Panier //////////////////////////
 
@@ -162,6 +166,7 @@ const totalPrice = () => {
 totalPrice();
 
 /////////////////////// Formulaire //////////////////////////
+let firstName, lastName, address, city, email;
 
 //Display des erreurs de validation
 const errorDisplay = (tag, message, valid) => {
@@ -177,7 +182,8 @@ const errorDisplay = (tag, message, valid) => {
   }
 };
 
-let firstName, lastName, address, city, email;
+
+const submitForm = () => {
 
 // //On cible les inputs + le formulaire
 let firstNameInput = document.getElementById("firstName"),
@@ -186,6 +192,7 @@ let firstNameInput = document.getElementById("firstName"),
   cityInput = document.getElementById("city"),
   emailInput = document.getElementById("email");
 const form = document.querySelector("form");
+
 
 //On écoute le bouton submit pour récupérer les info du form
 form.addEventListener("submit", (e) => {
@@ -236,8 +243,11 @@ form.addEventListener("submit", (e) => {
     });
 });
 
+}
+
 
 ///////////////////////////////////Contrôles des champs//////////////////////////
+submitForm();
 
 // // Contrôle du prénom
 const firstNameChecker = (value) => {
@@ -260,6 +270,7 @@ const firstNameChecker = (value) => {
     }
   }
 };
+
 
 // // Contrôle du Nom de Famille
 const lastNameChecker = (value) => {
@@ -335,6 +346,7 @@ const emailChecker = (value) => {
 const formInputs = document.querySelectorAll(".cart__order__form__question");
 
 formInputs.forEach((input) => {
+
   input.addEventListener("input", (e) => {
     // console.log(e.target.id);
     switch (e.target.id) {
